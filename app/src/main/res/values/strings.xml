@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">GSB_API</string>
+    <string name="login">Email ou Login</string>
+    <string name="password">Mot de passe</string>
+</resources>
