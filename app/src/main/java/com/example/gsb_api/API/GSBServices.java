@@ -1,7 +1,9 @@
 package com.example.gsb_api.API;
 
+import com.example.gsb_api.Model.Praticien;
 import com.example.gsb_api.Model.Visiteur;
 
+import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -14,5 +16,7 @@ public interface GSBServices {
     Call<Visiteur> login(@Body Map<String, String> credentials);
     @GET("/api/visiteurs/{id}")
     Call<Visiteur> getVisiteurById(@retrofit2.http.Path("id") String id);
+    @GET("/api/praticiens")
+    Call<List<Praticien>> getAllPraticiens();
 
 }

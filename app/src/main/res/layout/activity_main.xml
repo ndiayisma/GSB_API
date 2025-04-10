@@ -30,9 +30,10 @@
         app:srcCompat="@drawable/gsb_appl" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewPraticienList"
+        android:id="@+id/recyclerPraticienList"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical"/>
 
 
 </LinearLayout>

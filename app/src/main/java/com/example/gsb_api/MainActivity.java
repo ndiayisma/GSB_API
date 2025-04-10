@@ -14,13 +14,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.gsb_api.API.GSBServices;
 import com.example.gsb_api.API.RetrofitClientInstance;
+import com.example.gsb_api.Model.Praticien;
 import com.example.gsb_api.Model.Visiteur;
 import com.example.gsb_api.databinding.ActivityMainBinding;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,9 +34,13 @@ public class MainActivity extends AppCompatActivity implements Serializable {
 
     private ActivityMainBinding binding;
     private Visiteur visiteur;
+    private Praticien praticien;
+    private List<Praticien> praticienList;
+    private PraticienAdapter adapter;
+    GSBServices service = RetrofitClientInstance.getRetrofitInstance().create(GSBServices.class);
 
 
-    private ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new  ActivityResultCallback<ActivityResult>() {
+    /*private ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new  ActivityResultCallback<ActivityResult>() {
         @Override
         public void onActivityResult(ActivityResult result) {
             if(result.getResultCode() == 1){
@@ -47,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
             }
 
         }
-    });
+    });*/
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
@@ -71,6 +79,17 @@ public class MainActivity extends AppCompatActivity implements Serializable {
             // Gérer le cas où les informations du visiteur ne sont pas disponibles
             Log.e("MainActivity", "Aucun visiteur trouvé dans l'intent");
         }
+
+        if (praticien != null) {
+            Log.d("MainActivity", "Praticien: " + praticien.getNom());
+        } else {
+            Log.e("MainActivity", "Aucun praticien trouvé");
+        }
+
+        praticienList = new ArrayList<>();
+        adapter = new PraticienAdapter(praticienList);
+        binding.recyclerPraticienList.setLayoutManager(new LinearLayoutManager(this));
+        binding.recyclerPraticienList.setAdapter(adapter);
     }
 
     private void fetchVisiteurDetails(Visiteur visiteur) {
@@ -102,6 +121,30 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                 Log.e("API", "Network error: " + t.getMessage());
             }
         });
+
+        private void fetchPraticiens(Praticien praticien) {
+            GSBServices service2 = RetrofitClientInstance.getRetrofitInstance().create(GSBServices.class);
+            Call<List<Praticien>> call2 = service.getAllPraticiens();
+
+            call2.enqueue(new Callback<List<Praticien>>() {
+                @Override
+                public void onResponse(Call<List<Praticien>> call2, Response<List<Praticien>> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        praticienList.clear();
+                        praticienList.addAll(response.body());
+                        adapter.notifyDataSetChanged();
+                    } else {
+                        Log.e("MainActivity", "Failed to fetch practitioners: " + response.code());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<Praticien>> call, Throwable t) {
+                    Log.e("MainActivity", "Network error: " + t.getMessage());
+                }
+            });
+
+
 
     }
 }
