@@ -87,4 +87,11 @@ public class Visiteur implements java.io.Serializable {
         this.email = email;
         this.password = password;
     }
+
+    public String getVisiteurId() {
+        return visiteurId;
+    }
+    public void setVisiteurId(String visiteurId) {
+        this.visiteurId = visiteurId;
+    }
 }

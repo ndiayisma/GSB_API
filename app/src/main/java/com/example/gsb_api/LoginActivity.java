@@ -60,8 +60,7 @@ public class LoginActivity extends AppCompatActivity {
                     // Handle successful login
                     Toast.makeText(LoginActivity.this, "Login succeeded", Toast.LENGTH_SHORT).show();
                     Intent myIntent = new Intent(getApplicationContext(), MainActivity.class);
-                    myIntent.putExtra("nom", visiteur.getNom());
-                    myIntent.putExtra("prenom", visiteur.getPrenom());
+                    myIntent.putExtra("visiteur", visiteur);
                     startActivity(myIntent);
                 } else {
                     // Handle login failure

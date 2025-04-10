@@ -15,10 +15,16 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.gsb_api.API.GSBServices;
+import com.example.gsb_api.API.RetrofitClientInstance;
 import com.example.gsb_api.Model.Visiteur;
 import com.example.gsb_api.databinding.ActivityMainBinding;
 
 import java.io.Serializable;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements Serializable {
 
@@ -45,7 +51,9 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_main);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+
+        setContentView(binding.getRoot());
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -54,11 +62,46 @@ public class MainActivity extends AppCompatActivity implements Serializable {
 
         // Récupérer les informations du visiteur
         Intent intent = getIntent();
-        String nom = intent.getStringExtra("nom");
-        String prenom = intent.getStringExtra("prenom");
+        Visiteur visiteur = (Visiteur) intent.getSerializableExtra("visiteur");
 
-        // Utiliser les informations du visiteur (par exemple, les afficher dans un TextView)
-        TextView textView = findViewById(R.id.textView);
-        textView.setText("Bonjour " + nom + " " + prenom);
+        if (visiteur != null) {
+            this.visiteur = visiteur;
+            fetchVisiteurDetails(visiteur);
+        } else {
+            // Gérer le cas où les informations du visiteur ne sont pas disponibles
+            Log.e("MainActivity", "Aucun visiteur trouvé dans l'intent");
+        }
+    }
+
+    private void fetchVisiteurDetails(Visiteur visiteur) {
+        GSBServices service = RetrofitClientInstance.getRetrofitInstance().create(GSBServices.class);
+        Call<Visiteur> call = service.getVisiteurById(visiteur.getVisiteurId());
+
+        call.enqueue(new Callback<Visiteur>() {
+            @Override
+            public void onResponse(Call<Visiteur> call, Response<Visiteur> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Visiteur visiteur = response.body();
+                    Log.d("Visiteur", "Nom: " + visiteur.getNom() + ", Prénom: " + visiteur.getPrenom());
+
+                    TextView textView = findViewById(R.id.textView);
+                    if (visiteur.getNom() != null && visiteur.getPrenom() != null) {
+                        textView.setText("Bonjour " + visiteur.getNom() + " " + visiteur.getPrenom());
+                    } else {
+                        textView.setText("Bonjour");
+                        Log.e("MainActivity", "Nom or Prénom is null");
+                    }
+                } else {
+                    Log.e("API", "Failed to fetch visitor details: " + response.code());
+                }
+            }
+
+
+            @Override
+            public void onFailure(Call<Visiteur> call, Throwable t) {
+                Log.e("API", "Network error: " + t.getMessage());
+            }
+        });
+
     }
 }
