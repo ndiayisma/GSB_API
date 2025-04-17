@@ -11,6 +11,7 @@ public class Praticien {
     private String codePostal;
     private String ville;
     private List<String> visites;
+    private String praticienId;
 
     // Getters and Setters
     public String getNom() {
@@ -75,5 +76,13 @@ public class Praticien {
 
     public void setVisites(List<String> visites) {
         this.visites = visites;
+    }
+
+    public String getPraticienId() {
+        return praticienId;
+    }
+
+    public void setPraticienId(String praticienId) {
+        this.praticienId = praticienId;
     }
 }

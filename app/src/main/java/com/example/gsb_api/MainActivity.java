@@ -3,6 +3,7 @@ package com.example.gsb_api;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -15,6 +16,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gsb_api.API.GSBServices;
 import com.example.gsb_api.API.RetrofitClientInstance;
@@ -75,26 +77,36 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         if (visiteur != null) {
             this.visiteur = visiteur;
             fetchVisiteurDetails(visiteur);
+            fetchPraticiens();
         } else {
             // Gérer le cas où les informations du visiteur ne sont pas disponibles
             Log.e("MainActivity", "Aucun visiteur trouvé dans l'intent");
-        }
-
-        if (praticien != null) {
-            Log.d("MainActivity", "Praticien: " + praticien.getNom());
-        } else {
-            Log.e("MainActivity", "Aucun praticien trouvé");
         }
 
         praticienList = new ArrayList<>();
         adapter = new PraticienAdapter(praticienList);
         binding.recyclerPraticienList.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerPraticienList.setAdapter(adapter);
+
+        binding.recyclerPraticienList.setHasFixedSize(true);
+        View.OnClickListener View;
+        binding.recyclerPraticienList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(android.view.View v) {
+                int position = binding.recyclerPraticienList.getChildAdapterPosition(v);
+                if (position != RecyclerView.NO_POSITION) {
+                    Praticien selectedPraticien = praticienList.get(position);
+                    Intent intent = new Intent(MainActivity.this, PraticienActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
     }
+
 
     private void fetchVisiteurDetails(Visiteur visiteur) {
         GSBServices service = RetrofitClientInstance.getRetrofitInstance().create(GSBServices.class);
-        Call<Visiteur> call = service.getVisiteurById(visiteur.getVisiteurId());
+        Call<Visiteur> call = service.getVisiteurById(visiteur.getVisiteurId(), "Bearer " + visiteur.getToken());
 
         call.enqueue(new Callback<Visiteur>() {
             @Override
@@ -104,47 +116,51 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                     Log.d("Visiteur", "Nom: " + visiteur.getNom() + ", Prénom: " + visiteur.getPrenom());
 
                     TextView textView = findViewById(R.id.textView);
-                    if (visiteur.getNom() != null && visiteur.getPrenom() != null) {
-                        textView.setText("Bonjour " + visiteur.getNom() + " " + visiteur.getPrenom());
+                    if (textView != null) {
+                        if (visiteur.getNom() != null && visiteur.getPrenom() != null) {
+                            textView.setText("Bonjour " + visiteur.getNom() + " " + visiteur.getPrenom());
+                        } else {
+                            textView.setText("Bonjour");
+                            Log.e("MainActivity", "Nom ou Prénom est null");
+                        }
                     } else {
-                        textView.setText("Bonjour");
-                        Log.e("MainActivity", "Nom or Prénom is null");
+                        Log.e("MainActivity", "TextView introuvable");
                     }
                 } else {
-                    Log.e("API", "Failed to fetch visitor details: " + response.code());
+                    Log.e("API", "Échec de la récupération des détails du visiteur : " + response.code());
                 }
             }
-
 
             @Override
             public void onFailure(Call<Visiteur> call, Throwable t) {
-                Log.e("API", "Network error: " + t.getMessage());
+                Log.e("API", "Erreur réseau : " + t.getMessage());
             }
         });
+    }
 
-        private void fetchPraticiens(Praticien praticien) {
-            GSBServices service2 = RetrofitClientInstance.getRetrofitInstance().create(GSBServices.class);
-            Call<List<Praticien>> call2 = service.getAllPraticiens();
 
-            call2.enqueue(new Callback<List<Praticien>>() {
-                @Override
-                public void onResponse(Call<List<Praticien>> call2, Response<List<Praticien>> response) {
-                    if (response.isSuccessful() && response.body() != null) {
-                        praticienList.clear();
-                        praticienList.addAll(response.body());
-                        adapter.notifyDataSetChanged();
-                    } else {
-                        Log.e("MainActivity", "Failed to fetch practitioners: " + response.code());
-                    }
+    private void fetchPraticiens() {
+        GSBServices service2 = RetrofitClientInstance.getRetrofitInstance().create(GSBServices.class);
+        Call<List<Praticien>> call2 = service2.getAllPraticiens();
+
+        call2.enqueue(new Callback<List<Praticien>>() {
+            @Override
+            public void onResponse(Call<List<Praticien>> call2, Response<List<Praticien>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    praticienList.clear();
+                    praticienList.addAll(response.body());
+                    adapter.notifyDataSetChanged();
+                    Log.d("Praticiens", "Liste des praticiens récupérée avec succès");
+                } else {
+                    Log.e("MainActivity", "Échec de la récupération des praticiens : " + response.code());
                 }
+            }
 
-                @Override
-                public void onFailure(Call<List<Praticien>> call, Throwable t) {
-                    Log.e("MainActivity", "Network error: " + t.getMessage());
-                }
-            });
-
-
+            @Override
+            public void onFailure(Call<List<Praticien>> call, Throwable t) {
+                Log.e("MainActivity", "Network error: " + t.getMessage());
+            }
+        });
 
     }
 }

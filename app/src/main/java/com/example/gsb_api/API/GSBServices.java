@@ -15,7 +15,9 @@ public interface GSBServices {
     @POST("/api/visiteurs/login")
     Call<Visiteur> login(@Body Map<String, String> credentials);
     @GET("/api/visiteurs/{id}")
-    Call<Visiteur> getVisiteurById(@retrofit2.http.Path("id") String id);
+    Call<Visiteur> getVisiteurById(
+            @retrofit2.http.Path("id") String id,
+            @retrofit2.http.Header("Authorization") String token);
     @GET("/api/praticiens")
     Call<List<Praticien>> getAllPraticiens();
 

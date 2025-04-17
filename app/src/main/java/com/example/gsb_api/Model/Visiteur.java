@@ -94,4 +94,12 @@ public class Visiteur implements java.io.Serializable {
     public void setVisiteurId(String visiteurId) {
         this.visiteurId = visiteurId;
     }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 }

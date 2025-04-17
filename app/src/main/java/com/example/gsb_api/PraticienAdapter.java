@@ -18,9 +18,15 @@ public class PraticienAdapter extends RecyclerView.Adapter<PraticienAdapter.Prat
     // For now, it's just a placeholder.
 
     private List<Praticien> praticiens;
+    private OnItemClickListener listener;
+
+    public interface OnItemClickListener {
+        void onItemClick(Praticien praticien);
+    }
 
     public PraticienAdapter(List<Praticien> praticiens) {
         this.praticiens = praticiens;
+        this.listener = listener;
     }
 
     @NonNull
@@ -34,6 +40,7 @@ public class PraticienAdapter extends RecyclerView.Adapter<PraticienAdapter.Prat
     public void onBindViewHolder(@NonNull PraticienViewHolder holder, int position) {
         Praticien praticien = praticiens.get(position);
         holder.nom.setText(praticien.getNom());
+        holder.itemView.setOnClickListener(v -> listener.onItemClick(praticien));
         holder.bind(praticien);
     }
 
