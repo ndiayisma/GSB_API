@@ -17,6 +17,7 @@ public class Visiteur implements java.io.Serializable {
     private List<String> visites;
     private String visiteurId;
     private String token;
+    private List<Praticien> praticiensPortefeuille;
 
     // Getters and Setters
     public String getNom() {
@@ -101,5 +102,13 @@ public class Visiteur implements java.io.Serializable {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public List<Praticien> getPraticiensPortefeuille() {
+        return praticiensPortefeuille;
+    }
+
+    public void setPraticiensPortefeuille(List<Praticien> praticiensPortefeuille) {
+        this.praticiensPortefeuille = praticiensPortefeuille;
     }
 }

@@ -20,5 +20,10 @@ public interface GSBServices {
             @retrofit2.http.Header("Authorization") String token);
     @GET("/api/praticiens")
     Call<List<Praticien>> getAllPraticiens();
+    @POST("/api/visiteurs/{id}/portefeuille")
+    Call<List<Praticien>> addPraticienToPortefeuille(
+            @retrofit2.http.Path("id") String id,
+            @retrofit2.http.Body Praticien praticien,
+            @retrofit2.http.Header("Authorization") String token);
 
 }
