@@ -11,8 +11,20 @@
 
 
     <TextView
-        android:id="@+id/Praticien"
+        android:id="@+id/PraticienNom"
         android:layout_width="match_parent"
         android:layout_height="36dp"
-        android:textSize="30dp" />
+        android:textSize="22dp" />
+    <TextView
+        android:id="@+id/PraticienAdresse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18dp" />
+    <TextView
+        android:id="@+id/PraticienTel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18dp" />
+
+
 </LinearLayout>

@@ -39,7 +39,9 @@ public class PraticienAdapter extends RecyclerView.Adapter<PraticienAdapter.Prat
     @Override
     public void onBindViewHolder(@NonNull PraticienViewHolder holder, int position) {
         Praticien praticien = praticiens.get(position);
-        holder.nom.setText(praticien.getNom());
+        holder.nom.setText(praticien.getNom() + " " + praticien.getPrenom());
+        holder.adresse.setText(praticien.getRue());
+        holder.telephone.setText(praticien.getTel());
         holder.itemView.setOnClickListener(v -> listener.onItemClick(praticien));
         holder.bind(praticien);
     }
@@ -51,10 +53,14 @@ public class PraticienAdapter extends RecyclerView.Adapter<PraticienAdapter.Prat
 
     public static class PraticienViewHolder extends RecyclerView.ViewHolder {
         TextView nom;
+        TextView adresse;
+        TextView telephone;
 
         public PraticienViewHolder(@NonNull View itemView) {
             super(itemView);
-            nom = itemView.findViewById(R.id.Praticien);
+            nom = itemView.findViewById(R.id.PraticienNom);
+            adresse = itemView.findViewById(R.id.PraticienAdresse);
+            telephone = itemView.findViewById(R.id.PraticienTel);
         }
 
         public void bind(Praticien praticien) {

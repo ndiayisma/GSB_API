@@ -6,17 +6,27 @@ import java.util.Date;
 import java.util.List;
 
 public class Visiteur implements java.io.Serializable {
+    @SerializedName("nom")
     private String nom;
+    @SerializedName("prenom")
     private String prenom;
+    @SerializedName("tel")
     private String tel;
+    @SerializedName("email")
     private String email;
+    @SerializedName("email_hash")
     private String emailHash;
-    private Date dateEmbauche;
     @SerializedName("date_embauche")
+    private Date dateEmbauche;
+    @SerializedName("password")
     private String password;
+    @SerializedName("visites")
     private List<String> visites;
+    @SerializedName("visiteur_id")
     private String visiteurId;
+    @SerializedName("token")
     private String token;
+    @SerializedName("portefeuille")
     private List<Praticien> praticiensPortefeuille;
 
     // Getters and Setters
