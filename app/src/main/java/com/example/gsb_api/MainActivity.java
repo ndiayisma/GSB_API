@@ -41,23 +41,6 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     private PraticienAdapter adapter;
     GSBServices service = RetrofitClientInstance.getRetrofitInstance().create(GSBServices.class);
 
-
-    /*private ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new  ActivityResultCallback<ActivityResult>() {
-        @Override
-        public void onActivityResult(ActivityResult result) {
-            if(result.getResultCode() == 1){
-                Intent resultIntent = result.getData();
-                if(resultIntent != null){
-                    Log.d("Resultat", resultIntent.getSerializableExtra("monSejourRecupere").toString() );
-
-                    //monSejour = (Sejour) resultIntent.getSerializableExtra("monSejourRecupere");
-                    //kitVoyage.ajouterOption(monSejour);
-                    //binding.textViewResultat.setText(kitVoyage.toString());
-                }
-            }
-
-        }
-    });*/
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
@@ -84,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         }
 
         praticienList = new ArrayList<>();
-        adapter = new PraticienAdapter(praticienList);
+        adapter = new PraticienAdapter(praticienList, this);
         binding.recyclerPraticienList.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerPraticienList.setAdapter(adapter);
 
@@ -96,7 +79,9 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                 int position = binding.recyclerPraticienList.getChildAdapterPosition(v);
                 if (position != RecyclerView.NO_POSITION) {
                     Praticien selectedPraticien = praticienList.get(position);
-                    Intent intent = new Intent(MainActivity.this, PraticienActivity.class);
+                    Intent intent = new Intent(MainActivity.this, PraticiensDetailsActivity.class);
+                    intent.putExtra("praticien", selectedPraticien);
+                    intent.putExtra("visiteur", visiteur);
                     startActivity(intent);
                 }
             }

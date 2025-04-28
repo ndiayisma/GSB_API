@@ -1,5 +1,7 @@
 package com.example.gsb_api;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,14 +21,16 @@ public class PraticienAdapter extends RecyclerView.Adapter<PraticienAdapter.Prat
 
     private List<Praticien> praticiens;
     private OnItemClickListener listener;
+    private Context context;
 
     public interface OnItemClickListener {
         void onItemClick(Praticien praticien);
     }
 
-    public PraticienAdapter(List<Praticien> praticiens) {
+    public PraticienAdapter(List<Praticien> praticiens, Context context) {
         this.praticiens = praticiens;
         this.listener = listener;
+        this.context = context;
     }
 
     @NonNull
@@ -40,9 +44,14 @@ public class PraticienAdapter extends RecyclerView.Adapter<PraticienAdapter.Prat
     public void onBindViewHolder(@NonNull PraticienViewHolder holder, int position) {
         Praticien praticien = praticiens.get(position);
         holder.nom.setText(praticien.getNom() + " " + praticien.getPrenom());
-        holder.adresse.setText(praticien.getRue());
+        holder.adresse.setText(praticien.getRue() + " " + praticien.getCodePostal() + " " + praticien.getVille());
         holder.telephone.setText(praticien.getTel());
-        holder.itemView.setOnClickListener(v -> listener.onItemClick(praticien));
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, PraticiensDetailsActivity.class);
+            intent.putExtra("praticien", praticien);
+            context.startActivity(intent);
+        });
         holder.bind(praticien);
     }
 

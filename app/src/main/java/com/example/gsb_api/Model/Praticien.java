@@ -1,17 +1,29 @@
 package com.example.gsb_api.Model;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
 import java.util.List;
 
-public class Praticien {
+public class Praticien implements Serializable {
+    @SerializedName("nom")
     private String nom;
+    @SerializedName("prenom")
     private String prenom;
+    @SerializedName("tel")
     private String tel;
+    @SerializedName("email")
     private String email;
+    @SerializedName("rue")
     private String rue;
+    @SerializedName("codePostal")
     private String codePostal;
+    @SerializedName("ville")
     private String ville;
     private List<String> visites;
+    @SerializedName("praticienId")
     private String praticienId;
+    private String _id;
 
     // Getters and Setters
     public String getNom() {
@@ -84,5 +96,13 @@ public class Praticien {
 
     public void setPraticienId(String praticienId) {
         this.praticienId = praticienId;
+    }
+
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
     }
 }

@@ -1,12 +1,19 @@
 package com.example.gsb_api.Model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Date;
 
-public class Visite {
+public class Visite implements java.io.Serializable {
+    @SerializedName("dateVisite")
     private Date dateVisite;
+    @SerializedName("commentaire")
     private String commentaire;
+    @SerializedName("visiteur")
     private String visiteur;
+    @SerializedName("praticien")
     private String praticien;
+    @SerializedName("motif")
     private String motif;
 
     // Getters and Setters

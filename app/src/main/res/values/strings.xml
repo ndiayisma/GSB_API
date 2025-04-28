@@ -2,4 +2,7 @@
     <string name="app_name">GSB_API</string>
     <string name="login">Email ou Login</string>
     <string name="password">Mot de passe</string>
+    <string name="login_button">Se connecter</string>
+    <string name="visites">Visites</string>
+    <string name="praticien_full_name">%1$s %2$s</string>
 </resources>

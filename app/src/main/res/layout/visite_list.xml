@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_marginBottom="10dp"
+    android:layout_marginStart="20dp"
+    android:layout_marginEnd="20dp"
+    tools:context=".PraticiensDetailsActivity">
+
+        <TextView
+            android:id="@+id/text_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date :"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/text_motif"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Motif :"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:id="@+id/text_commentaire"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Commentaire :"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:id="@+id/text_visiteur"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Visiteur :"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:id="@+id/text_praticien"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Praticien :"
+            android:layout_marginTop="8dp" />
+
+    </LinearLayout>
